@@ -59,10 +59,10 @@ if (len(sys.argv) > 1):
     if ('-f' in sys.argv or '--full' in sys.argv):
         with pd.option_context('display.max_rows', None, 'display.max_columns', None):
             print(df1)
-    if ('-s' in sys.argv or '--save' in sys.argv):
-        df1.to_csv('stats.csv')
     else:
         print(df1)
+    if ('-s' in sys.argv or '--save' in sys.argv):
+        df1.to_csv('stats.csv')
 else:
     print("Wrong number of arguments")
     sys.exit(1)

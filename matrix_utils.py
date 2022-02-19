@@ -10,7 +10,8 @@ def standardize_feature(feature):
 
 
 def standardize_df(df):
+    standardized_df = df.copy()
     num_features = get_numeric_col_names(df)
     for feature in num_features:
-        df[feature] = standardize_feature(df[feature])
-    return df
+        standardized_df[feature] = standardize_feature(standardized_df[feature])
+    return standardized_df
