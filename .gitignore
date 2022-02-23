@@ -1,5 +1,8 @@
 # Custom
 *.pdf
+*.~lock*
+houses.csv
+stats.csv
 
 
 # Byte-compiled / optimized / DLL files
