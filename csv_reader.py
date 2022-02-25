@@ -6,7 +6,7 @@ def read_csv(filename, index_col="Index"):
     if (filename.find(".csv") != -1):
         try:
             df = pd.read_csv(filename, index_col=index_col)
-            if (df.shape[1] < 2):
+            if (df.shape[1] < 1):
                 print(f"Invalid file: {filename}")
                 sys.exit(1)
             return df

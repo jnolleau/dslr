@@ -15,3 +15,10 @@ def standardize_df(df):
     for feature in num_features:
         standardized_df[feature] = standardize_feature(standardized_df[feature])
     return standardized_df
+
+def standardize_df_test(df, mean, std):
+    standardized_df = df.copy()
+    num_features = get_numeric_col_names(df)
+    for feature in num_features:
+        standardized_df[feature] = (standardized_df[feature] - mean.loc[feature]) / std.loc[feature]
+    return standardized_df

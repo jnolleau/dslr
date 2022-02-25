@@ -1,6 +1,7 @@
 from math import isnan, sqrt
 import numpy as np
 
+
 def count_column(serie):
     size = 0
     for val in serie:
@@ -51,3 +52,7 @@ def percentiles_column(serie):
     q2 = (size + 1) // 2
     q3 = (3 * size + 1) // 4
     return (sorted_serie[q1 - 1], sorted_serie[q2 - 1], sorted_serie[q3 - 1])
+
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))

@@ -3,6 +3,7 @@
 *.~lock*
 houses.csv
 stats.csv
+weights.csv
 
 
 # Byte-compiled / optimized / DLL files
