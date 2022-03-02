@@ -1,5 +1,7 @@
+import argparse
 import re
 import sys
+import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from matrix_utils import standardize_df_test
@@ -7,14 +9,13 @@ from LR_model import LogisticRegression as LR
 from csv_reader import read_csv
 
 
-def predict(df_test, features, target, model):
+def predict(df_test, features, target, model, truth):
 
     # Get all the parameters from model
     b = model['b']
     mean = model['mean']
     std = model['std']
     model.drop(['b', 'mean', 'std'], axis=1, inplace=True)
-    # print(model)
 
     # Extract selected features and fill NAs with mean with the mean derived from each feature
     X_test = df_test[features].fillna(mean)
@@ -22,11 +23,11 @@ def predict(df_test, features, target, model):
 
     lr = LR()
     # Prediction
-    y_pred = lr.predict(X_test, weights=model, intercept=b, classes=model.columns)
-    y_true = read_csv('houses_true.csv', index_col="Index")
+    y_pred = lr.predict(X_test, weights=model.values, intercept=b, classes=np.asarray(model.columns))
+    y_true = read_csv(truth, index_col="Index")
 
     # count nbr of true / false
-    diff = (y_pred == y_true['Hogwarts House']).value_counts()
+    diff = (y_pred == y_true[target]).value_counts()
     print(diff)
     
     # Sklearn Accuracy score
@@ -37,23 +38,25 @@ def predict(df_test, features, target, model):
     pd.DataFrame(y_pred).to_csv(
     'houses.csv', header=[target], index_label='Index')
 
-if (len(sys.argv) > 1):
-    r = re.compile(".*.csv")
-    args = list(filter(r.match, sys.argv))
-    if (args):
-        df_test = read_csv(args[0], index_col="Index")
-        model = read_csv('weights.csv', index_col='weights')
 
-        features = ['Defense Against the Dark Arts',
-                    'Herbology', 'Ancient Runes', 'Charms']
-        target = 'Hogwarts House'
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dataset', help='Dataset for testings as .csv')
+    parser.add_argument(
+        '--truth', '-t', help='Filename containing true predictions', default='houses_true.csv')
 
-        predict(df_test, features, target, model)
+    args = parser.parse_args()
 
+    match = re.search(".*.csv", args.dataset)
+    if match:
+        df_test = read_csv(match.group(0), index_col="Index")
     else:
-        print("Bad file extension")
+        print(f"Bad file extension: {args.dataset}")
         sys.exit(1)
 
-else:
-    print("Wrong number of arguments")
-    sys.exit(1)
+    model = read_csv('weights.csv', index_col='weights')
+    features = ['Defense Against the Dark Arts',
+                'Herbology', 'Ancient Runes', 'Charms']
+    target = 'Hogwarts House'
+
+    predict(df_test, features, target, model, args.truth)

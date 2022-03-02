@@ -1,7 +1,5 @@
 import sys
 import re
-import pandas as pd
-import numpy as np
 from csv_reader import read_csv
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -26,7 +24,7 @@ if (len(sys.argv) > 1):
         print('Pair plot saved to pairplot.png')
     else:
         plt.show()
-    print("Feature chosen: Astronomy, Herbology, Ancient Runes, and Charms")
+    print("Feature chosen: Defense Against the Dark Arts, Herbology, Ancient Runes, and Charms")
 else:
     print("Wrong number of arguments")
     sys.exit(1)
