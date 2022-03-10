@@ -75,12 +75,12 @@ class LogisticRegression:
 
     def __MGD(self, X, y, W, b):
         batch_size = 10
-        nb_batchs = len(y) // batch_size
+        nb_batchs = y.shape[0] // batch_size
         cost_history = np.zeros((nb_batchs * self.nb_iter, 1))
         for e in range(1, self.nb_iter + 1):
             if (self.shuffle is not None):
                 X, y = shuffle(X, y)
-            for i, n in zip(range(0, nb_batchs, batch_size), range(nb_batchs)):
+            for i, n in zip(range(0, y.shape[0], batch_size), range(nb_batchs)):
                 H0 = self.__H0_calculation(X[i:batch_size + i], W, b)
                 dW, db = self.__grad(
                     X[i:batch_size + i], y[i:batch_size + i], H0)
